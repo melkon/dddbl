@@ -1,0 +1,4 @@
+1273919602
+ConfigParser	/home/melkon/rb/dddbl/parser.rb	class ConfigParser
+readDir	/home/melkon/rb/dddbl/parser.rb	  def readDir
+readFile	/home/melkon/rb/dddbl/parser.rb	  def readFile

@@ -1,0 +1,89 @@
+class Handler
+
+  @@conditions = {}
+
+  def self.get condition_name
+
+    @@conditions[condition_name].reverse_each do |condition|
+      yield condition[:block], condition[:raise]
+    end
+
+  end
+
+  def self.set condition, &block
+
+    @@conditions[condition[:name]] = [] unless @@conditions[condition[:name]]
+    @@conditions[condition[:name]].push({:raise => condition[:raise], :block => block})
+
+  end
+
+end
+
+class ConditionError < StandardError; end
+class ConditionNotHandledError < StandardError; end
+class ConditionHandledError < StandardError; end
+
+def signal condition_name
+
+  Handler::get condition_name do |block, raise|
+
+    raise(ConditionHandledError.save(block.call)) if raise
+
+  end
+
+end
+
+def handle *conditions, &block
+
+  begin
+
+    block.call
+
+  rescue ConditionHandledError => ex
+
+    ex.get
+
+  end
+
+end
+
+def signal condition_name, *params
+  
+  Handler::get condition_name, *params
+  
+end
+
+def error condition_name, *params
+
+  signal condition_name, *params
+
+  raise ConditonNotHandledError, condition_name, *params
+
+end
+
+handle :condition => lambda {|block|
+
+
+
+} do
+
+  error :condition, "condition error"
+
+end
+
+
+
+
+
+
+bind :condition => lambda {|block|
+
+
+} do
+
+
+end
+
+bind :condition => funciton
+unbind :condition => function
+

@@ -1,0 +1,14 @@
+[Verbindungs-Alias]
+CONNECTION = "DNS (siehe PHP-Handbuch: PDO)"
+USER = "Benutzername"
+PASS = "Passwort"
+TYPE = "Datenbanktyp"
+BIND = true
+DEFAULT = "true"
+
+[Verbindungs-Alias2]
+CONNECTION = "DNS (siehe PHP-Handbuch: PDO)"
+USER = "Benutzername2"
+PASS = "Passwort2"
+TYPE = "Datenbanktyp2"
+BIND = false
