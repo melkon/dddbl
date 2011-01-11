@@ -5,7 +5,8 @@
         <data xmlns="http://www.netbeans.org/ns/ruby-project/1">
             <name>dddbl</name>
             <source-roots>
-                <root id="src.lib.dir"/>
+                <root id="src.example.dir"/>
+                <root id="src.lib.dir" name="Source Files"/>
             </source-roots>
             <test-roots/>
         </data>

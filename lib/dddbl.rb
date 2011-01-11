@@ -1,8 +1,8 @@
-require 'php_parse_ini.func'
+require 'dddbl/helpers/php_parse_ini.func'
 
-require "dddbl_config"
-require "dddbl_query_pool"
-require "dddbl_db_pool"
+require "dddbl/dddbl_config"
+require "dddbl/dddbl_query_pool"
+require "dddbl/dddbl_db_pool"
 
 require "dbi"
 
@@ -24,6 +24,3 @@ class DDDBL
   end
 
 end
-
-DDDBL_Config.loadDbDefinitionsDir('.')
-DDDBL_Config.loadQueriesDir('.')
