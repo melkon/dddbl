@@ -2,7 +2,7 @@ def php_parse_ini file
 
   raise ArgumentError, "#{file} not readable" unless File::readable? file
 
-  config = create_hash
+  config = create_deep_hash
 
   File.open file do |file|
 
@@ -21,6 +21,6 @@ def php_parse_ini file
 
 end
 
-def create_hash
+def create_deep_hash
   Hash.new(&(p=lambda{|h,k| h[k] = Hash.new(&p)}))
 end
