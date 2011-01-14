@@ -1,36 +1,43 @@
 class DDDBL_DB_Pool
 
-  @@dbDefinitions = create_hash
-  @@dbConnections = create_hash
+  @@dbDefinitions = create_deep_hash
+  @@dbConnections = create_deep_hash
+  @@dbDefault     = ""
 
-  def self.addDefinition query
+  def self.addDefinition dbAlias, dbDefinition
 
-    p query
+    if dbDefinition.has_key? "default" then
+      @@dbDefault = dbAlias
+    end
 
-    @@dbDefinitions[query["alias"]] = query
+    @@dbDefinitions[dbAlias] = dbDefinition
 
   end
 
   def self.get dbAlias = ''
 
-    raise ArgumentError, "dbalias has to be a string" unless dbAlias.respond_to? to_s
+    raise ArgumentError, "dbalias has to be a string" unless dbAlias.respond_to? :to_s
 
     @@dbConnections[dbAlias] = self.connect dbAlias unless @@dbConnections.member? dbAlias
+
+    @@dbConnections[dbAlias]
 
   end
 
   def self.connect dbAlias
 
     if @@dbDefinitions.member? dbAlias then
-      db = @@dbDefinitions[dbAlias]
-    elsif dbAlias.empty?
-      db = self.getDefault
+      dbConfig = @@dbDefinitions[dbAlias]
+    elsif @@dbDefinition.member? @@dbDefault
+      dbConfig = @@dbDefinition[@@dbDefault]
     else
       raise StandardError, "cannot return database, neither default nor correct aliasdb is given"
     end
 
-    db = DDDBL_DB.new @@dbDefinitions[dbAlias]
-    @@dbConnections[dbAlias] = db
+    dbConnection = DDDBL_DB.new dbConfig
+    @@dbConnections[dbAlias] = dbConnection
+
+    dbConnection
 
   end
 

@@ -1,7 +1,7 @@
 class DDDBL_Query_Pool
 
-  @@queryDefinitions = create_hash
-  @@queryObjects = create_hash
+  @@queryDefinitions = create_deep_hash
+  @@queryObjects = create_deep_hash
 
   def self.addQuery queryAlias, queryConfig, type = ''
 

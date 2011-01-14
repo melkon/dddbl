@@ -12,8 +12,9 @@ class DDDBL_Config
 
   def self.loadDbDefinitions file
 
-    (php_parse_ini file).each do |group, config|
-      DDDBL_DB_Pool.addDefinition({group => config})
+    (php_parse_ini file).each do |dbAlias, dbConfig|
+
+      DDDBL_DB_Pool.addDefinition(dbAlias, dbConfig)
     end
 
   end
@@ -31,6 +32,7 @@ class DDDBL_Config
   def self.loadQueries file
 
     (php_parse_ini file).each do |queryAlias, config|
+      p queryAlias, config
       DDDBL_Query_Pool.addQuery queryAlias, config
     end
 

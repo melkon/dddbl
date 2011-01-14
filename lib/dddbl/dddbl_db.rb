@@ -5,13 +5,13 @@ class DDDBL_DB
 
   def initialize dbConfig
 
-    raise ArgumentError, 'config has to be a hash' unless dbConfig.is_a? 'Hash'
-    raise ArgumentError, 'no connection details given' unless dbConfig.member? 'connection'
-    raise ArgumentError, 'no user given' unless dbConfig.member? 'user'
-    raise ArgumentError, 'no password given' unless dbConfig.member? 'password'
+    raise ArgumentError, 'config has to be a hash' unless dbConfig.is_a? Hash
+    raise ArgumentError, 'no connection details given' unless dbConfig.member? 'CONNECTION'
+    raise ArgumentError, 'no user given' unless dbConfig.member? 'USER'
+    raise ArgumentError, 'no password given' unless dbConfig.member? 'PASS'
 
-    @dbConnection = DBI.connect dbConfig["connection"], dbConfig["user"], dbConfig['password']
-    @dbType =  dbConfig['type'] unless dbConfig.member? 'type'
+    @dbConnection = DBI.connect dbConfig['CONNECTION'], dbConfig['USER'], dbConfig['PASS']
+    @dbType =  dbConfig['TYPE'] if dbConfig.member? 'TYPE'
 
   end
 

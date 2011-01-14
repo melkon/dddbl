@@ -3,6 +3,7 @@ require 'dddbl/helpers/php_parse_ini.func'
 require "dddbl/dddbl_config"
 require "dddbl/dddbl_query_pool"
 require "dddbl/dddbl_db_pool"
+require "dddbl/dddbl_db"
 
 require "dbi"
 
@@ -12,8 +13,7 @@ class DDDBL
 
   def self.get query_alias, *params
 
-    p query_alias
-    p params
+    
 
   end
 

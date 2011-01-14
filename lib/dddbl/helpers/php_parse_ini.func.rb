@@ -7,15 +7,26 @@ def php_parse_ini file
   File.open file do |file|
 
     content = file.read
+    group = ''
 
     while content.slice! /(\[(?<alias>.*?)\])?\s*(?<config>.*?)\s*=\s*(?<value>("(.*?)")|([^\n]*))\s*/miu do
 
-      group = ($~[:alias] unless nil == $~[:alias]) || ''
+      group = $~[:alias] || group
       config[group][$~[:config]] = $~[:value]
+
+      # remove " and ' and whitespaces
+      # would be nicer to figure out a correct regexp
+      # but for now it ...works
+      # it's propbly gonna be fucked up by the sql-queries though.
+      config[group][$~[:config]].tr! "'", ""
+      config[group][$~[:config]].tr! '"', ''
+      config[group][$~[:config]].strip!
 
     end
 
   end
+
+  p config
 
   return config
 
