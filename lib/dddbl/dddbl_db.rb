@@ -1,7 +1,9 @@
 class DDDBL_DB
 
+  attr_reader :dbType, :dbConnection
+
   @dbConnection = nil
-  @dbType = ''
+  @dbType = ""
 
   def initialize dbConfig
 
@@ -11,7 +13,7 @@ class DDDBL_DB
     raise ArgumentError, 'no password given' unless dbConfig.member? 'PASS'
 
     @dbConnection = DBI.connect dbConfig['CONNECTION'], dbConfig['USER'], dbConfig['PASS']
-    @dbType =  dbConfig['TYPE'] if dbConfig.member? 'TYPE'
+    @dbType =  (dbConfig.member? 'TYPE') ? dbConfig['TYPE'] :  ""
 
   end
 

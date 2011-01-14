@@ -26,12 +26,16 @@ def php_parse_ini file
 
   end
 
-  p config
-
   return config
 
 end
 
 def create_deep_hash
   Hash.new(&(p=lambda{|h,k| h[k] = Hash.new(&p)}))
+end
+
+def parse_handler_config config
+
+  config.split
+
 end

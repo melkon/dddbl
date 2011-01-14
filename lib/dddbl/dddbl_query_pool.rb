@@ -13,7 +13,7 @@ class DDDBL_Query_Pool
 
   def self.get dbConnection, queryAlias
 
-    raise ArgumentError, 'dbConnection is not a DDDB_DB' unless dbConnection.is_a? 'DDDBL_DB'
+    raise ArgumentError, 'dbConnection is not a DDDB_DB' unless dbConnection.is_a? DDDBL_DB
 
     dbType = dbConnection.dbType
 
@@ -21,8 +21,8 @@ class DDDBL_Query_Pool
       raise StandardError, '#{dbType} and #{queryAlias} does not own a query definition'
     end
 
-    if @@queryObjects[dbType][queryAlias].empty?
-      @@queryObjects[dbType][queryAlias] = DDDB_Query.new dbConnection, @@queryDefinitions[dbType][queryAlias]
+    if @@queryObjects[dbType][queryAlias].empty? then
+      @@queryObjects[dbType][queryAlias] = DDDBL_Query.new dbConnection, @@queryDefinitions[dbType][queryAlias]
     end
 
     @@queryObjects[dbType][queryAlias]

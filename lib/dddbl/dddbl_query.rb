@@ -11,13 +11,31 @@ class DDDBL_Query
     @dbConnection = dbConnection
     @queryDefinition = queryDefinition
 
+    @queryHandler = parse_handler_config((@queryDefinition.member? 'handler') ? @queryDefinition['handler'] : 'execute')
+
   end
 
-  def get
+  def get queryParams
 
-    queryHandler = @queryDefinition['handler'] || 'execute'
-    
+    send @queryHandler.shift, self, queryParams, @queryHandler
 
+  end
+
+  def executeQuery queryParams
+
+    dbh = @dbConnection.dbConnection
+    val = Array.new
+    dbh.execute(@queryDefinition['query']) do |stmt|
+
+      stmt.fetch_array do |row|
+
+        val << row.to_a
+
+      end
+
+    end
+
+    val
 
   end
 

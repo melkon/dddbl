@@ -1,5 +1,6 @@
 [alias-test]
-query="asd"
+query="show tables"
+handler="execute bsd csd"
 
 [wuff]
 query = "muff asd
