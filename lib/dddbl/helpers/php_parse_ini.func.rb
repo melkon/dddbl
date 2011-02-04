@@ -9,7 +9,9 @@ def php_parse_ini file
     content = file.read
     group = ''
 
-    while content.slice! /(\[(?<alias>.*?)\])?\s*(?<config>.*?)\s*=\s*(?<value>("(.*?)")|([^\n]*))\s*/miu do
+    while content.slice! /(\[(?<alias>.*?)\])?\s*(?<config>.*?)\s*=\s*(?<value>("+(.*?)"+)|([^\n]*))\s*/miu do
+
+      p $~
 
       group = $~[:alias] || group
       config[group][$~[:config]] = $~[:value]
@@ -25,6 +27,8 @@ def php_parse_ini file
     end
 
   end
+
+  p config
 
   return config
 

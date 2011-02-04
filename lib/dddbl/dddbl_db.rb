@@ -14,6 +14,8 @@ class DDDBL_DB
 
     @dbConnection = DBI.connect dbConfig['CONNECTION'], dbConfig['USER'], dbConfig['PASS']
     @dbType =  (dbConfig.member? 'TYPE') ? dbConfig['TYPE'] :  ""
+    
+     ge
 
   end
 
