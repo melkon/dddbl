@@ -7,11 +7,26 @@ module DDDBL
     @database = :default
     attr_accessor :database
 
-    def get query_alias, *params
-      sth = Query::Pool[RDBI::Pool[@database].get_dbh.driver][query_alias]
+    def get(query_alias, *params)
+      dbh = RDBI::Pool[@database]
+      query = DDDBL::Pool[dbh.get_dbh.driver][query_alias]
+      res = dbh.execute(query[:query], *params)
+      res.as(query[:handler]).fetch(:all) if !query[:handler].empty?
+    end
+
+    def transaction(&block)
+      dbh = RDBI::Pool[@database]
+      dbh.transaction(&block)
     end
 
   end
+
+end
+
+DDDBL::transaction do
+
+  DDDBL::get('TEST-QUERY')
+  DDDBL::get('TEST-UPDATE')
 
 end
 
@@ -24,8 +39,12 @@ class DDDBL::Pool
     end
 
     def []=(dbtype, query_alias, query_config)
-      @pool = Hash.new(&(p=lambda{|h,k| h[k] = Hash.new(&p)}))
+      @pool ||= Hash.new(&(p=lambda{|h,k| h[k] = Hash.new(&p)}))
       @pool[dbtype][query_alias] = query_config
+    end
+
+    def <<(query_config)
+      @pool[query_config[:type]][query_config[:alias]] = query_config
     end
 
   end
@@ -33,7 +52,7 @@ class DDDBL::Pool
 end
 
 # just a mock for now
-module DDDBL::Config
+class DDDBL::Config
 
   class << self
 
