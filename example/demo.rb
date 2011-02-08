@@ -1,11 +1,35 @@
-require "dddbl"
+require 'rdbi'
+require 'rdbi-driver-mysql'
 
-#DDDBL_Config.loadDbDefinitionsDir('.')
-#DDDBL_Config.loadQueriesDir('.')
+require 'dddbl'
 
+db = DDDBL::Config::Mock.get('TEST-DB')
+db[:pool_name] = 'TEST-DB'
 
-db = DDDBL.new 'TEST'
+RDBI::connect_cached(db[:type], db);
 
-p db.get 'alias-test'
+DDDBL::select_db('TEST-DB')
 
+DDDBL::Pool << DDDBL::Config::Mock.get('TEST-QUERY')
+DDDBL::Pool << DDDBL::Config::Mock.get('TEST-UPDATE')
+DDDBL::Pool << DDDBL::Config::Mock.get('TEST-SELECT')
+DDDBL::Pool << DDDBL::Config::Mock.get('TEST-INSERT')
+DDDBL::Pool << DDDBL::Config::Mock.get('TEST-DROP')
 
+DDDBL::get('TEST-QUERY')
+
+DDDBL::get('TEST-INSERT', 'andre')
+DDDBL::get('TEST-INSERT', 'melkon')
+
+p DDDBL::get('TEST-SELECT')
+
+DDDBL::transaction do
+
+  DDDBL::get('TEST-UPDATE', 'thorny', 2)
+  DDDBL::get('TEST-INSERT')
+  
+end
+
+p DDDBL::get('TEST-SELECT')
+
+DDDBL::get('TEST-DROP')
