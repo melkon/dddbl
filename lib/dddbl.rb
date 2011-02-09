@@ -1,8 +1,13 @@
 class DDDBL
 
   GLOBAL_DB_DRIVER = ''
-
+  
   class << self
+
+    attr_reader :dbh
+    alias connected? dbh
+
+    attr_reader :database
 
     def select_db(database_name)
       if @dbh == nil || @database != database_name
@@ -45,23 +50,52 @@ class DDDBL::Pool
       @pool[dbtype][query_alias] = query_config
     end
 
-    def <<(query_config)
-      DDDBL::Pool[query_config[:type], query_config[:alias]] = query_config
+    def <<(query_configs)
+      query_configs.each do |key, query_config|
+        DDDBL::Pool[query_config[:type], query_config[:alias]] = query_config
+      end
     end
 
   end
 
 end
 
-module DDDBL::Config
+module DDDBL::Pool::DB
+
+  def self.<<(db_configs)
+    db_configs.each do |key, db_config|
+      RDBI::connect_cached(db_config[:type], db_config);
+      DDDBL::select_db(db_config[:pool_name]) if db_config[:default] && !DDDBL::connected?
+    end
+  end
 
 end
 
-module  DDDBL::Config::Mock
+module DDDBL::Config ; end
 
-  def self.get(query_alias)
+module DDDBL::Config::Mock
 
-    @mocks ||= {
+  def parse_dbs(file)
+    {
+      'TEST-DB' => { :type      => :MySQL,
+                     :pool_name => 'TEST-DB',
+                     :host      => 'localhost',
+                     :dbname    => 'test',
+                     :user      => 'root',
+                     :pass      => '',
+                     :default   => true },
+      'TEST-ME' => { :type      => :MySQL,
+                     :pool_name => 'TEST-ME',
+                     :host      => 'localhost',
+                     :dbname    => 'test_me',
+                     :user      => 'root',
+                     :pass      => '',
+                     :default   => false }
+    }
+  end
+
+  def parse_queries(file)
+    {
       'TEST-QUERY'  => { :alias   => 'TEST-QUERY',
                          :query   => 'CREATE TABLE IF NOT EXISTS muff ( id SERIAL, name VARCHAR(255) )',
                          :type    => DDDBL::GLOBAL_DB_DRIVER },
@@ -78,15 +112,11 @@ module  DDDBL::Config::Mock
                          :query   => 'SELECT * FROM muff',
                          :handler => 'Struct',
                          :type    => DDDBL::GLOBAL_DB_DRIVER },
-      'TEST-DB'     => { :type    => :MySQL,
-                         :host    => 'localhost',
-                         :dbname  => 'test',
-                         :user    => 'root',
-                         :pass    => ''}
     }
-
-    @mocks[query_alias]
-
   end
 
+end
+
+class << DDDBL::Config
+  include DDDBL::Config::Mock
 end

@@ -3,18 +3,8 @@ require 'rdbi-driver-mysql'
 
 require 'dddbl'
 
-db = DDDBL::Config::Mock.get('TEST-DB')
-db[:pool_name] = 'TEST-DB'
-
-RDBI::connect_cached(db[:type], db);
-
-DDDBL::select_db('TEST-DB')
-
-DDDBL::Pool << DDDBL::Config::Mock.get('TEST-QUERY')
-DDDBL::Pool << DDDBL::Config::Mock.get('TEST-UPDATE')
-DDDBL::Pool << DDDBL::Config::Mock.get('TEST-SELECT')
-DDDBL::Pool << DDDBL::Config::Mock.get('TEST-INSERT')
-DDDBL::Pool << DDDBL::Config::Mock.get('TEST-DROP')
+DDDBL::Pool::DB << DDDBL::Config.parse_dbs('file')
+DDDBL::Pool     << DDDBL::Config.parse_queries('file')
 
 DDDBL::get('TEST-QUERY')
 
