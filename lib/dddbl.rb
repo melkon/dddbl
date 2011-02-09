@@ -4,11 +4,6 @@ class DDDBL
   
   class << self
 
-    attr_reader :dbh
-    alias connected? dbh
-
-    attr_reader :database
-
     def select_db(database_name)
       if @dbh == nil || @database != database_name
         @dbh = RDBI::pool(database_name).get_dbh
@@ -22,6 +17,7 @@ class DDDBL
     end
 
     def method_missing(method, *args, &block)
+      return false if !@dbh.is_a? RDBI::Database
       @dbh.send(method, *args, &block)
     end
 

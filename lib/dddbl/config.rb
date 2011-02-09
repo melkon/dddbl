@@ -42,8 +42,4 @@ module DDDBL::Config::Mock
     }
   end
 
-  def muff
-    
-  end
-
 end
