@@ -10,6 +10,8 @@ class DDDBL::Pool
         @pool[dbtype][query_alias]
       elsif @pool.has_key?(DDDBL::GLOBAL_DB_DRIVER) && @pool[DDDBL::GLOBAL_DB_DRIVER].has_key?(query_alias)
         @pool[DDDBL::GLOBAL_DB_DRIVER][query_alias]
+      else
+        raise StandardError, "#{query_alias} not a saved query alias"
       end
 
     end

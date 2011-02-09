@@ -1,5 +1,7 @@
-[TEST]
-CONNECTION = DBI:Mysql:information_schema:localhost
+[TEST-DB]
+HOST = localhost
+DBNAME = test
+TYPE = MySQL
 USER = root
 PASS =
 BIND = true

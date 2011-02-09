@@ -1,14 +1,11 @@
 require 'rdbi'
 require 'rdbi-driver-mysql'
 
+require 'inifile'
 require 'dddbl'
 
-class << DDDBL::Config
-  include DDDBL::Config::Mock
-end
-
-DDDBL::Pool::DB << DDDBL::Config.parse_dbs('file')
-DDDBL::Pool     << DDDBL::Config.parse_queries('file')
+DDDBL::Pool::DB << DDDBL::Config.parse_dbs('dbdef.def')
+DDDBL::Pool     << DDDBL::Config.parse_queries('test.sql')
 
 DDDBL::get('TEST-QUERY')
 

@@ -1,6 +1,6 @@
 class DDDBL
 
-  GLOBAL_DB_DRIVER = ''
+  GLOBAL_DB_DRIVER = :default
   
   class << self
 
@@ -13,7 +13,7 @@ class DDDBL
     def get(query_alias, *params)
       query = DDDBL::Pool[@dbh.driver, query_alias]
       res = @dbh.execute(query[:query], *params)
-      res.as(query[:handler]).fetch(:all) if query.has_key?(:handler)
+      res.as(query[:handler]).fetch(:all) if !query[:handler].empty?
     end
 
     def method_missing(method, *args, &block)

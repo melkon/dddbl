@@ -1,12 +1,12 @@
-[alias-test]
-query="show tables"
-handler="execute bsd csd"
+[TEST-QUERY]
+QUERY = "CREATE TABLE IF NOT EXISTS muff (id SERIAL, name VARCHAR(255))"
 
-[wuff]
-query = "muff asd
-asdad"
-handler=handler-wuff
+[TEST-INSERT]
+QUERY = "INSERT INTO muff (name) VALUES(?)"
 
-[mehr-tests]
-query = "test"
-handler = SINGE_VALUE
+[TEST-SELECT]
+QUERY = "SELECT * FROM muff"
+HANDLER = MULTI
+
+[TEST-DROP]
+QUERY = "DROP TABLE IF EXISTS muff"
