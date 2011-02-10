@@ -4,7 +4,7 @@ require 'rdbi-driver-mysql'
 require 'inifile'
 require 'dddbl'
 
-DDDBL::Pool::DB << DDDBL::Config.parse_dbs('dbdef.def')
+DDDBL::Pool::DB << DDDBL::Config.parse_dbs('/home/melkon/rb/dddbl/example/dbdef.def')
 DDDBL::Pool     << DDDBL::Config.parse_queries('test.sql')
 
 DDDBL::get('TEST-QUERY')

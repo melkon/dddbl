@@ -27,12 +27,20 @@ end
 
 module DDDBL::Utils
 
+  def mandatory(fields)
+    @mandatory = fields
+  end
+
+  def optional(fields)
+    @optional = fields
+  end
+
   def valid?(check)
-    mandatory.each do |key|
+    @mandatory.each do |key|
       return false if !check.has_key?(key) || check[key].empty?
     end
 
-    optional.each do |key|
+    @optional.each do |key|
       return false if !check.has_key?(key)
     end
   end
@@ -43,4 +51,4 @@ require 'dddbl/config'
 require 'dddbl/pool'
 
 # result handler
-require 'dddbl/result/MULTI'
+require 'dddbl/results'
