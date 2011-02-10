@@ -25,6 +25,20 @@ class DDDBL
 
 end
 
+module DDDBL::Utils
+
+  def valid?(check)
+    mandatory.each do |key|
+      return false if !check.has_key?(key) || check[key].empty?
+    end
+
+    optional.each do |key|
+      return false if !check.has_key?(key)
+    end
+  end
+
+end
+
 require 'dddbl/config'
 require 'dddbl/pool'
 
