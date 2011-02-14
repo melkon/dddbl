@@ -2,18 +2,18 @@
 
 == What?
 
-DDDBL is a library to simplify the use of (different) databases and split up
+DDDBL is a library to simplify the use of (different) databases and splits up
 application's and database's (e.g: SQL queries) code through an easy
 and unified API. The SQL is defined in files outside of the application's source
-to easiliy port the SQL to other applications - or even programming languages.
+to easiliy port the SQL to diffrent applications - or even programming languages.
 Refering to the written queries using an alias makes it even more clearer and
-better to understand for newcomers, who don't have to waste time figuring out
+better to understand for newcomers, who then don't have to waste time figuring out
 what the query does.
 
 == Why?
 
 Many applications interacting with databases have the sql code directly written
-in the appilcation's source. Reading, reviewing and understanding that
+in the its source. Reading, reviewing and understanding that
 unfimiliar code can be hard, even more for non sql-pros. Most of the time -
 to optimize the queries and the database performance in general - DBAs are hired
 who are probably not familiar with the programming language used. So they have
@@ -21,14 +21,16 @@ to dig into the code and try to optimize it without breaking anything.
 
 == Supported databases
 
-DDDBL uses RDBI which is a layer for serveral databases. Please check the
-project's github page ( https://github.com/RDBI/ ) to see a list of supported drivers.
+Common RDMS like MySQL, PostgreSQL and SQLite are supported. The DDDBL uses another
+gem called RDBI which simplifies the handling of several databases. For a full
+list please of supported drivers please check the RDBI's github page
+(https://github.com/RDBI/).
 
 == It's a port, isn't it?
 
 Yes. The DDDBL was orginally written in PHP and is a creation of Torsten Zühlsdorff.
-For more information on the PHP version, go to http://www.dddbl.de . The ruby
-version will be there also featured in the near future.
+For more information on the PHP version, go to http://www.dddbl.de (German only).
+The ruby version will also be featured there in the near future.
 
 === Any differences?
 
@@ -41,11 +43,11 @@ PHP version offers. For example:
 
 == Dependecies
 
-The database handling and queryring is handled by the RDBI library. For more
-information please see their README ( https://github.com/RDBI/rdbi/blob/master/README.txt )
+The database handling and querying is handled by the RDBI library. For more
+information please see their README (https://github.com/RDBI/rdbi/blob/master/README.txt)
 or visit the project's page on https://github.com/RDBI/ .
 
-== Get started
+== Getting started
 
 === Database definitions
 
@@ -55,7 +57,7 @@ file using the ini-format. Example:
     [TEST-DB]
     HOST = localhost
     DBNAME = test
-    TYPE = MySQL
+    TYPE = PostgreSQL
     USER = root
     PASS =
     DEFAULT = true
@@ -81,7 +83,7 @@ definitions results in establishing a connection to every defined database.
 ==== Selecting (another) database
 
 If only one connection is used, the following is just "good-to-know".
-To select another database but the default is done by calling
+To select (another) database but the default is done by calling
 
     DDDBL::select_db('TEST-DB')
 
@@ -148,6 +150,30 @@ has to be looked up in the RDBI::Database documentation
 Since the QUERY-MULTLINE will fail, the whole transaction will be rolled back
 and no table will be created.
 
+=== Creating your own result handler
+
+As you may know or guess by now, RDBI supports transforming the query's result
+set to any datastructure you want. It's as straight forward as adding a query
+file to the pool, just extend the RDBI's RDBI::Result::Driver class and
+implement at least #fetch. The name of the new result driver is then the name
+which has to be used in the query's HANDLER configuration field.
+
+It's also possible to pass a configuration to the result driver defined in the
+query definition:
+
+    [QUERY-ALIAS]
+    QUERY = "SELECT bar FROM foo;"
+    HANDLER = MULTI INT::bar
+
+MULTI, as in the other examples, is the name of the result driver. If there's
+a whitespace following with more text, this additional text will be passed to
+the result driver's constructor. The example definition will explitictly cast
+every row's bar-column value to an Integer.
+
+For more information on creating a result driver, please read the documentation
+of RDBI::Result::Driver. If you want to overwrite a default result driver,
+just override the class.
+
 == Bughunting was successful!
 
 Just report the bug through github's tracker: https://github.com/melkon/dddbl/issues
@@ -159,4 +185,4 @@ Just report the bug through github's tracker: https://github.com/melkon/dddbl/is
 
 == Copyright
 
-Copyright (c) 2010 André Gawron. See LICENSE for details.
+Copyright (c) 2011 André Gawron. See LICENSE for details.
