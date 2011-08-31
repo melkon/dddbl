@@ -1,8 +1,8 @@
 [TEST-DB]
 HOST = localhost
-DBNAME = test
-TYPE = MySQL
-USER = root
+DBNAME = trackadev
+TYPE = PostgreSQL
+USER = trackadev
 PASS =
 BIND = true
 DEFAULT = true

@@ -1,8 +1,29 @@
 require 'rdbi'
-require 'rdbi-driver-mysql'
+require 'rdbi-driver-postgresql'
 
 require 'inifile'
 require 'dddbl'
+
+class RDBI::Result::Driver::YAL < RDBI::Result::Driver
+  def initialize(result, *args)
+    super
+    RDBI::Util.optional_require('yaml')
+  end
+
+  def format_single_row(raw)
+    ::Hash[column_names.zip(raw)].to_yaml
+  end
+
+  def format_multiple_rows(raw_rows)
+    raw_rows.collect { |row| ::Hash[column_names.zip(row)] }.to_yaml
+  end
+
+  private
+  def column_names
+    @column_names ||= @result.schema.columns.map(&:name)
+  end
+end
+
 
 DDDBL::Pool::DB << DDDBL::Config.parse_dbs('dbdef.def')
 DDDBL::Pool     << DDDBL::Config.parse_queries('test.sql')

@@ -1,4 +1,3 @@
-# -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
 require "dddbl/version"
 
@@ -14,10 +13,9 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "dddbl"
 
-  s.add_dependency "dbi"
+  s.add_dependency "inifile", ">= 0.4.1"
+  s.add_dependency "rdbi"
 
   s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 end
