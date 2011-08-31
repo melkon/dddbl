@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.name        = "dddbl"
   s.version     = DDDBL::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["André Gawron"]
+  s.authors     = ["Andre Gawron"]
   s.email       = ["andre@ziemek.de"]
   s.homepage    = "https://github.com/melkon/dddbl"
   s.summary     = %q{A Definition Driven Database Layer}
